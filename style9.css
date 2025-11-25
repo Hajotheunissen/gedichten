@@ -1,0 +1,66 @@
+/*
+CSS for Publicatie Nederland
+*/
+
+body {
+	font-family:times, Helvetica, Courier, sans-serif;
+	width: 44em;
+	padding-top:94px;
+	padding-left:6em;
+	padding-right:6em;
+	line-height: 142%
+}
+
+h1 {
+	font-weight:normal;
+	padding-bottom:2.5em;
+	color:black;
+	font-size: 23px;
+}
+
+P { 
+	font-weight:normal;
+	
+	color:black;
+	font-size: 19px;
+}
+.nudged2space {
+position: relative;
+left: .45em;
+
+}
+
+
+
+/*
+I used h2 element for styling the date under some of the poems. I didn't know what else to use (div?). Not perfect because I need different variations of styling of the dates and how many header options do I have?
+*/
+
+h2 {
+	font-weight:normal;
+	color:black;
+	padding-top:2.9em;
+	font-size: .8em;
+	position:relative;
+	left:16em
+}
+
+h3 {
+	font-weight:normal;
+	padding-bottom:94px;
+	padding-left:105px;
+	color:black;
+	font-size: 21px;
+	position:relative;
+	top:7em
+}
+
+h4 {
+	font-weight:normal;
+	color:black;
+	padding-top: 1.50em;
+	font-size: .8em;
+	position:relative;
+	left:0em
+}
+

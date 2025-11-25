@@ -1,0 +1,54 @@
+/*
+CSS for Publicatie Nederland
+*/
+
+
+body {
+	text-decoration:none;
+	font-family:times, Helvetica, Courier, sans-serif;
+	padding-top:94px;
+	line-height: 150%
+}
+
+h1 {
+	font-weight:normal;
+	padding-bottom:3.0em;
+	color:black;
+	font-size: 70px;
+}
+
+h2 {
+	font-weight:normal;
+	padding-bottom:1.3em;
+	color:black;
+	font-size: 27px;
+}
+
+h3 {
+	font-weight:normal;
+	padding-bottom:1.3em;
+	color:black;
+	font-size: 27px;
+}
+
+h4 {
+	text-decoration: none;
+	font-weight:normal;
+	padding-bottom:6.7em;
+	padding-right: 83px;
+	color:black;
+	font-size: 13px;
+}
+
+P { 
+	font-weight:normal;
+	
+	color:black;
+	font-size: 21px;
+}
+.nudged2space {
+position: relative;
+left: .45em;
+
+}
+

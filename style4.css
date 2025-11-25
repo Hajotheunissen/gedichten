@@ -1,0 +1,25 @@
+<style type="text/css">
+html, body {
+	height: 100%;
+}
+
+#centeredcontent {
+font-family:times, Helvetica, Courier, sans-serif;
+	width: 30em;
+	height: 100px;
+	text-align: center;
+	font-weight:normal;
+	color:black;
+	font-size: 21px;
+line-height: 150%;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -15em; 
+	/* Half the width of the DIV tag which is 50 pixels */
+	margin-top: -50px; 
+	/* Half the height of the DIV tag which is also 50 pixels */
+
+/* Hugo, kijk of width 30 em genoeg is voor lange zinnen, anders width wat naar boven bijstellen en margin-left accordingly halveren*/
+}
+</style>
