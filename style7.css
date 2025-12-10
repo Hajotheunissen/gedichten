@@ -52,3 +52,16 @@ left: .45em;
 
 }
 
+h1 {
+    font-size: 70px;
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 42px;
+    }
+    body {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}
