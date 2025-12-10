@@ -53,12 +53,15 @@ left: .45em;
 }
 
 h1 {
-    font-size: 70px;
+    font-size: 52px;          /* was 70px → nu mooi groot, maar niet overheersend */
+    margin-bottom: 2em;       /* veel meer ruimte onder de titel */
+    line-height: 1.2;
 }
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 42px;
+        font-size: 38px;      /* op telefoon nog steeds duidelijk groot, maar netjes */
+        margin-bottom: 2.5em; /* extra lucht op kleine schermen */
     }
     body {
         padding-left: 30px;
