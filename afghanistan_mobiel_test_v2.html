@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Afghanistan - Mobiel Test</title>
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --h1-padding-bottom: 6.7em;
+    }
+
+    body {
+      font-family: times, Helvetica, Courier, sans-serif;
+      padding-top: 90px;
+      padding-left: 30px;
+      padding-right: 30px;
+      padding-bottom: 200px;
+      line-height: 150%;
+      margin: 0;
+    }
+
+    h1 {
+      font-weight: normal;
+      padding-bottom: var(--h1-padding-bottom);
+      color: black;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    p { 
+      font-weight: normal;
+      text-decoration: none;
+      color: black;
+      font-size: 21px;
+    }
+
+    h2 {
+      font-weight: normal;
+      color: black;
+      padding-top: 2.9em;
+      font-size: 0.75em;
+      position: relative;
+      left: 4em;
+    }
+
+    .info-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #000;
+      color: white;
+      padding: 15px;
+      font-family: -apple-system, Arial, sans-serif;
+      font-size: 16px;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .mobile-controls {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #000;
+      color: white;
+      padding: 20px;
+      font-family: -apple-system, Arial, sans-serif;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+    }
+
+    .mobile-controls h4 {
+      margin: 0 0 15px 0;
+      font-size: 16px;
+      text-align: center;
+      font-weight: normal;
+    }
+
+    .current-value {
+      text-align: center;
+      font-size: 28px;
+      margin: 15px 0 20px 0;
+      font-weight: bold;
+      color: #4CAF50;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .mobile-controls button {
+      padding: 20px;
+      background: #4CAF50;
+      border: none;
+      color: white;
+      font-size: 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-appearance: none;
+      font-family: -apple-system, Arial, sans-serif;
+    }
+
+    .mobile-controls button:active {
+      background: #45a049;
+      transform: scale(0.98);
+    }
+
+    .mobile-controls button.active {
+      background: #2196F3;
+    }
+  </style>
+</head>
+<body>
+  <!-- Info bar -->
+  <div class="info-bar">
+    Scherm: <span id="width">0</span>px - <span id="device-type">Mobiel</span>
+  </div>
+
+  <!-- Gedicht -->
+  <div id="title">
+    <h1>Afghanistan</h1>
+  </div>
+  
+  <div id="body">
+    <p>Je wordt ergens geboren<br/>
+Je gaat ergens dood<br/>
+In dat ergens was je klein<br/>
+en werd je groot<br/>
+Dat ergens is je wereld<br/>
+De wereld die je kent<br/>
+Je bent in die wereld<br/>
+Omdat je bent die je bent.</p>
+  </div>
+
+  <div id="dateorundertext">
+    <h2>2.7.'01</h2>
+  </div>
+
+  <!-- Controls -->
+  <div class="mobile-controls">
+    <h4>Test witruimte onder titel:</h4>
+    <div class="current-value" id="padding-display">6.7em</div>
+    <div class="button-grid">
+      <button onclick="setPadding(6.7, this)" id="btn-6-7" class="active">6.7em<br/>(origineel)</button>
+      <button onclick="setPadding(6.0, this)" id="btn-6-0">6.0em<br/>(-0.7)</button>
+      <button onclick="setPadding(5.7, this)" id="btn-5-7">5.7em<br/>(-1 regel)</button>
+      <button onclick="setPadding(5.0, this)" id="btn-5-0">5.0em<br/>(-1.7)</button>
+    </div>
+  </div>
+
+  <script>
+    // Update scherm info
+    function updateInfo() {
+      const width = window.innerWidth;
+      document.getElementById('width').textContent = width;
+      
+      let deviceType = 'Desktop';
+      if (width <= 480) {
+        deviceType = 'Mobiel';
+      } else if (width <= 768) {
+        deviceType = 'Tablet';
+      }
+      document.getElementById('device-type').textContent = deviceType;
+    }
+    
+    // Padding aanpassen
+    function setPadding(value, button) {
+      console.log('Setting padding to: ' + value + 'em');
+      
+      // Update CSS variabele
+      document.documentElement.style.setProperty('--h1-padding-bottom', value + 'em');
+      
+      // Update display
+      document.getElementById('padding-display').textContent = value + 'em';
+      
+      // Update actieve knop
+      const buttons = document.querySelectorAll('.mobile-controls button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      if (button) {
+        button.classList.add('active');
+      }
+      
+      // Scroll naar boven om effect te zien
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+    
+    // Bij laden
+    updateInfo();
+    window.addEventListener('resize', updateInfo);
+    
+    // Test of JavaScript werkt
+    console.log('JavaScript is geladen en actief!');
+  </script>
+</body>
+</html>
