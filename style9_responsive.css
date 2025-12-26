@@ -1,0 +1,192 @@
+/*
+CSS for Intro/Uitleg pagina's - RESPONSIVE VERSION
+Voor: index 2.html met tekst over "dichten"
+BELANGRIJK: Verwijderd vaste width van 44em voor mobiel
+*/
+
+/* ============================================
+   BASE STYLES - DESKTOP
+   ============================================ */
+
+body {
+    font-family: times, Helvetica, Courier, sans-serif;
+    width: 44em;
+    max-width: 90%;  /* Nieuwe toevoeging voor responsive */
+    padding-top: 94px;
+    padding-left: 6em;
+    padding-right: 6em;
+    line-height: 142%;
+    margin: 0 auto;
+}
+
+h1 {
+    font-weight: normal;
+    padding-bottom: 2.5em;
+    color: black;
+    font-size: 23px;
+}
+
+P {
+    font-weight: normal;
+    color: black;
+    font-size: 19px;
+}
+
+.nudged2space {
+    position: relative;
+    left: .45em;
+}
+
+h2 {
+    font-weight: normal;
+    color: black;
+    padding-top: 2.9em;
+    font-size: .8em;
+    position: relative;
+    left: 16em;
+}
+
+h3 {
+    font-weight: normal;
+    padding-bottom: 94px;
+    padding-left: 105px;
+    color: black;
+    font-size: 21px;
+    position: relative;
+    top: 7em;
+}
+
+h4 {
+    font-weight: normal;
+    color: black;
+    padding-top: 1.50em;
+    font-size: .8em;
+    position: relative;
+    left: 0em;
+}
+
+/* ============================================
+   TABLET - 481px tot 768px
+   ============================================ */
+
+@media (max-width: 768px) {
+    body {
+        width: auto;
+        max-width: 100%;
+        padding-top: 60px;
+        padding-left: 4em;
+        padding-right: 4em;
+        line-height: 150%;
+    }
+    
+    h1 {
+        font-size: 21px;
+        padding-bottom: 2.0em;
+    }
+    
+    P {
+        font-size: 18px;
+    }
+    
+    h2 {
+        left: 10em;
+    }
+    
+    h3 {
+        padding-left: 60px;
+        padding-bottom: 60px;
+        top: 4em;
+    }
+}
+
+/* ============================================
+   MOBIEL - max 480px
+   ============================================ */
+
+@media (max-width: 480px) {
+    body {
+        width: auto;
+        max-width: 100%;
+        padding-top: 30px;
+        padding-left: 20px;
+        padding-right: 20px;
+        line-height: 160%;
+    }
+    
+    h1 {
+        font-size: 20px;
+        padding-bottom: 1.5em;
+        line-height: 1.4;
+    }
+    
+    P {
+        font-size: 18px;
+        line-height: 1.7;
+        text-align: left;
+    }
+    
+    /* Italic tekst in paragraaf */
+    P em {
+        font-style: italic;
+    }
+    
+    h2 {
+        left: 0;
+        padding-top: 2em;
+        text-align: right;
+    }
+    
+    h3 {
+        padding-left: 20px;
+        padding-bottom: 40px;
+        top: 2em;
+        font-size: 18px;
+    }
+    
+    h4 {
+        left: 0;
+    }
+    
+    .nudged2space {
+        left: 0.2em;
+    }
+}
+
+/* ============================================
+   EXTRA KLEINE SCHERMEN - max 360px
+   ============================================ */
+
+@media (max-width: 360px) {
+    body {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    h1 {
+        font-size: 19px;
+    }
+    
+    P {
+        font-size: 17px;
+    }
+}
+
+/* ============================================
+   PRINT STYLING
+   ============================================ */
+
+@media print {
+    body {
+        width: auto;
+        padding: 20px;
+        line-height: 150%;
+    }
+    
+    h1 {
+        padding-bottom: 1.5em;
+    }
+    
+    h3 {
+        padding-bottom: 40px;
+    }
+}

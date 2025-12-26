@@ -1,0 +1,162 @@
+/*
+CSS for Index met grote titel - RESPONSIVE VERSION  
+Voor: index 7.html met grote "Hugo Tonius" titel
+OPMERKING: Deze had al media queries, maar ik optimaliseer ze verder
+*/
+
+/* ============================================
+   BASE STYLES - DESKTOP
+   ============================================ */
+
+body {
+    text-decoration: none;
+    font-family: times, Helvetica, Courier, sans-serif;
+    padding-top: 94px;
+    padding-left: 40px;
+    padding-right: 40px;
+    line-height: 150%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-weight: normal;
+    padding-bottom: 2.0em;
+    color: black;
+    font-size: 52px;  /* al aangepast van 70px */
+    line-height: 1.2;
+}
+
+h2 {
+    font-weight: normal;
+    padding-bottom: 1.3em;
+    color: black;
+    font-size: 27px;
+}
+
+h3 {
+    font-weight: normal;
+    padding-bottom: 1.3em;
+    color: black;
+    font-size: 27px;
+}
+
+h4 {
+    text-decoration: none;
+    font-weight: normal;
+    padding-bottom: 6.7em;
+    padding-right: 83px;
+    color: black;
+    font-size: 13px;
+}
+
+P {
+    font-weight: normal;
+    color: black;
+    font-size: 21px;
+}
+
+.nudged2space {
+    position: relative;
+    left: .45em;
+}
+
+/* ============================================
+   TABLET - 481px tot 768px
+   ============================================ */
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 60px;
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+    
+    h1 {
+        font-size: 44px;
+        padding-bottom: 1.8em;
+    }
+    
+    h2, h3 {
+        font-size: 24px;
+        padding-bottom: 1.0em;
+    }
+    
+    h4 {
+        padding-right: 35px;
+        padding-bottom: 4em;
+    }
+    
+    P {
+        font-size: 19px;
+    }
+}
+
+/* ============================================
+   MOBIEL - max 480px
+   ============================================ */
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 40px;
+        padding-left: 20px;
+        padding-right: 20px;
+        line-height: 160%;
+    }
+    
+    h1 {
+        font-size: 38px;
+        padding-bottom: 1.5em;
+        margin-bottom: 0;
+    }
+    
+    h2, h3 {
+        font-size: 22px;
+        padding-bottom: 0.8em;
+    }
+    
+    h4 {
+        padding-right: 0;
+        padding-bottom: 2em;
+        font-size: 12px;
+    }
+    
+    P {
+        font-size: 18px;
+        line-height: 1.6;
+    }
+}
+
+/* ============================================
+   EXTRA KLEINE SCHERMEN - max 360px
+   ============================================ */
+
+@media (max-width: 360px) {
+    body {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    h1 {
+        font-size: 32px;
+    }
+    
+    h2, h3 {
+        font-size: 20px;
+    }
+}
+
+/* ============================================
+   PRINT STYLING
+   ============================================ */
+
+@media print {
+    body {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 36px;
+        padding-bottom: 1em;
+    }
+}
