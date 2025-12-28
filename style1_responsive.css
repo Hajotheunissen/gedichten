@@ -1,0 +1,237 @@
+/*
+CSS for Gedichten - RESPONSIVE VERSION
+Voor: Gedichten pagina's zoals Afghanistan, 666, etc.
+*/
+
+/* ============================================
+   BASE STYLES - DESKTOP FIRST
+   ============================================ */
+
+body {
+    font-family: times, Helvetica, Courier, sans-serif;
+    padding-top: 94px;
+    padding-left: 105px;
+    padding-right: 105px;
+    line-height: 150%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-weight: normal;
+    padding-bottom: 6.7em;
+    color: black;
+    font-size: 27px;
+}
+
+P {
+    font-weight: normal;
+    text-decoration: none;
+    color: black;
+    font-size: 21px;
+}
+
+.nudged2space {
+    position: relative;
+    left: .45em;
+}
+
+/* Date styling */
+h2 {
+    font-weight: normal;
+    color: black;
+    padding-top: 2.9em;
+    font-size: .8em;
+    position: relative;
+    left: 16em;
+}
+
+h3 {
+    font-weight: normal;
+    padding-bottom: 94px;
+    padding-left: 105px;
+    color: black;
+    font-size: 21px;
+    position: relative;
+    top: 7em;
+}
+
+h4 {
+    font-weight: normal;
+    color: black;
+    padding-top: 1.50em;
+    font-size: .8em;
+    position: relative;
+    left: 0em;
+}
+
+h6 {
+    font-weight: normal;
+    padding-bottom: 2.7em;
+    text-decoration: none;
+    padding-right: 105px;
+    color: gray;
+    font-size: 11px;
+}
+
+/* ============================================
+   NAVIGATIE STYLING
+   ============================================ */
+
+.navigation {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.nav-button {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+}
+
+.nav-button:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* ============================================
+   TABLET - 481px tot 768px
+   ============================================ */
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 60px;
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+    
+    h1 {
+        font-size: 24px;
+        padding-bottom: 4em;
+    }
+    
+    P {
+        font-size: 19px;
+    }
+    
+    h2 {
+        left: 10em;
+    }
+    
+    h3 {
+        padding-left: 60px;
+        padding-bottom: 60px;
+    }
+}
+
+/* ============================================
+   MOBIEL - max 480px
+   ============================================ */
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 30px;
+        padding-left: 20px;
+        padding-right: 20px;
+        line-height: 150%;
+    }
+    
+    h1 {
+        font-size: 36px;  /* DEMO A - Gematigd */
+        padding-bottom: 3.5em;  /* DEMO A - Perfect evenwicht */
+        line-height: 1.3;
+    }
+    
+    P {
+        font-size: 21px;
+        line-height: 1.42;  /* Iets compacter dan 1.5 voor iOS rendering */
+    }
+    
+    h2 {
+        left: 0;
+        padding-top: 2em;
+        text-align: right;
+        padding-right: 0;
+    }
+    
+    h3 {
+        padding-left: 20px;
+        padding-bottom: 40px;
+        top: 3em;
+    }
+    
+    h4 {
+        left: 0;
+    }
+    
+    h6 {
+        padding-right: 20px;
+        font-size: 10px;
+    }
+    
+    .nudged2space {
+        left: 0.2em;
+    }
+    
+    /* Navigatie knoppen stapelen op mobiel */
+    .navigation {
+        bottom: 10px;
+        right: 10px;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .nav-button {
+        padding: 10px 15px;
+        font-size: 16px;
+        text-align: center;
+        min-width: 80px;
+    }
+}
+
+/* ============================================
+   EXTRA KLEINE SCHERMEN - max 360px
+   ============================================ */
+
+@media (max-width: 360px) {
+    body {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    h1 {
+        font-size: 28px;
+    }
+    
+    P {
+        font-size: 18px;
+    }
+}
+
+/* ============================================
+   PRINT STYLING
+   ============================================ */
+
+@media print {
+    body {
+        padding: 20px;
+    }
+    
+    .navigation {
+        display: none;
+    }
+    
+    h1 {
+        padding-bottom: 2em;
+    }
+}
