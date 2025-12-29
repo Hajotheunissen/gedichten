@@ -113,7 +113,7 @@ P {
         padding-top: 40px;
         padding-left: 20px;
         padding-right: 20px;
-        line-height: 150%;  /* Consistent met desktop */
+        line-height: 160%;
     }
     
     h1 {
@@ -146,8 +146,7 @@ P {
     
     P {
         font-size: 18px;
-        line-height: 1.5;  /* Consistent met desktop 150% */
-        font-weight: bold;  /* BOLD voor "Gekte van deze tijd" tekst op mobiel */
+        line-height: 1.6;
     }
 }
 
