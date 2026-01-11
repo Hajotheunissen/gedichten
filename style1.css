@@ -104,4 +104,8 @@ text-decoration:none;
     h6 {
         padding-right: 20px;
     }
+
+    body {
+        line-height: 130%;
+    }
 }
