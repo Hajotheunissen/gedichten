@@ -15,12 +15,21 @@
   .nav-links p {
     margin: 0.5em 0;
   }
+  .mobile-title {
+    display: none;
+  }
   @media screen and (max-width: 600px) {
     .nav-links {
       right: 0;
     }
     .poem-list {
       font-size: 19px;
+    }
+    .full-title {
+      display: none;
+    }
+    .mobile-title {
+      display: inline;
     }
   }
 </style>
@@ -53,7 +62,7 @@
 <a href="De werkelijkheid.html">De werkelijkheid</a><br/>
 <a href="De zoeker schrijft en spreekt.html">De zoeker schrijft en spreekt</a><br/>
 <a href="Dilemma.html">Dilemma</a><br/>
-<a href="Een vrouwenleven gevuld met de geur uit kleine flesjes.html">Een vrouwenleven gevuld met de geur uit kleine flesjes</a><br/>
+<a href="Een vrouwenleven gevuld met de geur uit kleine flesjes.html"><span class="full-title">Een vrouwenleven gevuld met de geur uit kleine flesjes</span><span class="mobile-title">Een vrouwenleven gevuld</span></a><br/>
 <a href="Eenzaam.html">Eenzaam</a><br/>
 <a href="Eenzame trekjes.html">Eenzame trekjes</a><br/>
 <a href="Eenzame vrouw.html">Eenzame vrouw</a><br/>
