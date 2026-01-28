@@ -4,6 +4,7 @@
 <style href>a {text-decoration: none} </style>
   <title>Before you read</title>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link href="style9.css" rel="stylesheet" type="text/css" />
 <style>
   .back {
@@ -13,6 +14,18 @@
     font-size: 18px;
     color: #888;
     cursor: pointer;
+  }
+  /* Mobile responsiveness for prose content */
+  @media screen and (max-width: 600px) {
+    body {
+      width: auto;
+      padding-top: 40px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    p {
+      font-size: 18px;
+    }
   }
 </style>
 </head>
