@@ -22,4 +22,14 @@ line-height: 150%;
 
 /* Hugo, kijk of width 30 em genoeg is voor lange zinnen, anders width wat naar boven bijstellen en margin-left accordingly halveren*/
 }
+
+/* Mobile responsiveness */
+@media screen and (max-width: 600px) {
+    #centeredcontent {
+        width: 90%;
+        left: 50%;
+        margin-left: -45%;
+        font-size: 18px;
+    }
+}
 </style>

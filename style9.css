@@ -64,3 +64,28 @@ h4 {
 	left:0em
 }
 
+/* Mobile responsiveness */
+@media screen and (max-width: 600px) {
+    body {
+        width: auto;
+        padding-top: 40px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    h1 {
+        padding-bottom: 2.5em;
+        font-size: 24px;
+    }
+
+    P {
+        font-size: 18px;
+    }
+
+    h2 {
+        left: 0;
+        text-align: right;
+        padding-right: 20px;
+    }
+}
+
