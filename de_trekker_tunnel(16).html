@@ -108,9 +108,23 @@
       margin-top: 20px;
       min-height: 0;
       touch-action: none;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    .mobile-poem-area.visible {
+      opacity: 1;
+    }
+
+    canvas#mobileCanvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
     }
 
     .mobile-line {
+      z-index: 10;
       position: absolute;
       font-family: times, Helvetica, Courier, sans-serif;
       font-weight: normal;
@@ -157,6 +171,7 @@
 
   <!-- MOBILE -->
   <div class="mobile-poem-area" id="mobileArea">
+    <canvas id="mobileCanvas"></canvas>
     <div class="mobile-pause-indicator">&mdash; gepauzeerd &mdash;</div>
   </div>
 </div>
@@ -204,6 +219,184 @@
     var mobileArea = document.getElementById('mobileArea');
     var mCurrentLine = 0;
     var mPaused = false;
+
+    // Mobile canvas voor sterren en sterrenstof
+    var mCanvas = document.getElementById('mobileCanvas');
+    var mCtx = mCanvas.getContext('2d');
+
+    function resizeMobileCanvas() {
+      mCanvas.width = mobileArea.clientWidth;
+      mCanvas.height = mobileArea.clientHeight;
+    }
+    resizeMobileCanvas();
+    window.addEventListener('resize', resizeMobileCanvas);
+
+    var mBurstTime = null;
+    var mTunnelActive = false;
+    var mBurstRings = [];
+
+    var mStars = [];
+    for (var i = 0; i < 10; i++) {
+      mStars.push({
+        angle: Math.random() * Math.PI * 2,
+        dist: Math.random(),
+        speed: 0.0006 + Math.random() * 0.002,
+        size: 0.4 + Math.random() * 1.4,
+        brightness: 0.4 + Math.random() * 0.5,
+        twinkleSpeed: 0.4 + Math.random() * 1.5,
+        twinkleOffset: Math.random() * Math.PI * 2
+      });
+    }
+    var mDust = [];
+    for (var i = 0; i < 10; i++) {
+      mDust.push({
+        angle: Math.random() * Math.PI * 2,
+        dist: Math.random(),
+        speed: 0.0003 + Math.random() * 0.0015,
+        size: 0.2 + Math.random() * 0.5,
+        brightness: 0.15 + Math.random() * 0.3
+      });
+    }
+    var mPlanets = [];
+    var mPlanetColors = [{r:160,g:155,b:148},{r:130,g:135,b:140},{r:150,g:140,b:135}];
+    var mLastPlanetTime = 0, mPlanetInterval = 18000;
+
+    function drawMobileTunnel(now) {
+      var w = mCanvas.width, h = mCanvas.height;
+      var cx = w / 2, cy = h * 0.4;
+      var maxR = Math.max(w, h) * 0.8;
+
+      mCtx.fillStyle = '#fff';
+      mCtx.fillRect(0, 0, w, h);
+
+      if (!mTunnelActive) { requestAnimationFrame(drawMobileTunnel); return; }
+
+      var burstElapsed = now - mBurstTime;
+
+      // Expanderende ringen (Bond barrel-effect)
+      for (var r = 0; r < mBurstRings.length; r++) {
+        var ring = mBurstRings[r];
+        var ringTime = burstElapsed - ring.delay;
+        if (ringTime < 0) continue;
+        ring.radius += ring.speed;
+        var fadeStart = maxR * 0.6;
+        var alpha = ring.maxAlpha;
+        if (ring.radius > fadeStart) {
+          alpha *= Math.max(0, 1 - (ring.radius - fadeStart) / (maxR * 0.5));
+        }
+        if (alpha > 0.005) {
+          mCtx.beginPath();
+          mCtx.arc(cx, cy, ring.radius, 0, Math.PI * 2);
+          mCtx.strokeStyle = 'rgba(0,0,0,' + alpha + ')';
+          mCtx.lineWidth = ring.width;
+          mCtx.stroke();
+        }
+      }
+
+      var tunnelAlpha = Math.min(burstElapsed / 1500, 1);
+
+      // Concentrische cirkels
+      for (var i = 0; i < 20; i++) {
+        var t = i / 19, perspT = Math.pow(t, 2.2);
+        var radius = 4 + perspT * maxR;
+        mCtx.beginPath();
+        mCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+        mCtx.closePath();
+        mCtx.strokeStyle = 'rgba(0,0,0,' + ((0.03 + t * 0.06) * tunnelAlpha) + ')';
+        mCtx.lineWidth = 0.3 + t * 1.0;
+        mCtx.stroke();
+      }
+
+      // Centrum
+      var pulse = 0.7 + 0.3 * Math.sin(now * 0.002);
+      mCtx.beginPath(); mCtx.arc(cx, cy, 3 + 1.5 * pulse, 0, Math.PI * 2);
+      mCtx.fillStyle = 'rgba(0,0,0,' + (0.12 * pulse * tunnelAlpha) + ')'; mCtx.fill();
+      mCtx.beginPath(); mCtx.arc(cx, cy, 1.2, 0, Math.PI * 2);
+      mCtx.fillStyle = 'rgba(0,0,0,' + (0.25 * tunnelAlpha) + ')'; mCtx.fill();
+
+      if (!mPaused) {
+        for (var i = 0; i < mStars.length; i++) {
+          mStars[i].dist += mStars[i].speed;
+          if (mStars[i].dist > 1.1) {
+            mStars[i].dist = 0; mStars[i].angle = Math.random() * Math.PI * 2;
+          }
+        }
+        for (var i = 0; i < mDust.length; i++) {
+          mDust[i].dist += mDust[i].speed;
+          if (mDust[i].dist > 1.1) {
+            mDust[i].dist = 0; mDust[i].angle = Math.random() * Math.PI * 2;
+          }
+        }
+        if (now - mLastPlanetTime > mPlanetInterval) {
+          var col = mPlanetColors[Math.floor(Math.random() * mPlanetColors.length)];
+          mPlanets.push({
+            angle: Math.random() * Math.PI * 2, dist: 0,
+            speed: 0.0004 + Math.random() * 0.0006,
+            baseSize: 1.2 + Math.random() * 2.5, color: col,
+            hasRing: Math.random() > 0.6
+          });
+          mLastPlanetTime = now;
+          mPlanetInterval = 15000 + Math.random() * 12000;
+        }
+        for (var p = mPlanets.length - 1; p >= 0; p--) {
+          mPlanets[p].dist += mPlanets[p].speed;
+          if (mPlanets[p].dist > 1.1) mPlanets.splice(p, 1);
+        }
+      }
+
+      // Sterrenstof
+      for (var i = 0; i < mDust.length; i++) {
+        var dt = mDust[i], dpd = Math.pow(dt.dist, 1.8);
+        var dx = cx + Math.cos(dt.angle) * dpd * maxR;
+        var dy = cy + Math.sin(dt.angle) * dpd * maxR;
+        var dsz = dt.size * (0.1 + dt.dist * 1.2);
+        var da = dt.brightness * (0.3 + dt.dist * 0.7);
+        if (dt.dist < 0.05) da *= dt.dist / 0.05;
+        if (dt.dist > 0.9) da *= (1.1 - dt.dist) / 0.2;
+        mCtx.beginPath(); mCtx.arc(dx, dy, dsz, 0, Math.PI * 2);
+        mCtx.fillStyle = 'rgba(0,0,0,' + (da * 0.4) + ')'; mCtx.fill();
+      }
+
+      // Sterren
+      for (var i = 0; i < mStars.length; i++) {
+        var st = mStars[i], pd = Math.pow(st.dist, 1.8);
+        var sx = cx + Math.cos(st.angle) * pd * maxR;
+        var sy = cy + Math.sin(st.angle) * pd * maxR;
+        var sz = st.size * (0.2 + st.dist * 2.0);
+        var tw = 0.5 + 0.5 * Math.sin(now * 0.001 * st.twinkleSpeed + st.twinkleOffset);
+        var sa = st.brightness * tw * (0.3 + st.dist * 0.7);
+        if (st.dist < 0.05) sa *= st.dist / 0.05;
+        if (st.dist > 0.9) sa *= (1.1 - st.dist) / 0.2;
+        mCtx.beginPath(); mCtx.arc(sx, sy, sz, 0, Math.PI * 2);
+        mCtx.fillStyle = 'rgba(0,0,0,' + (sa * 0.8) + ')'; mCtx.fill();
+      }
+
+      // Planeten
+      for (var p = 0; p < mPlanets.length; p++) {
+        var pl = mPlanets[p], pd = Math.pow(pl.dist, 1.8);
+        var px = cx + Math.cos(pl.angle) * pd * maxR;
+        var py = cy + Math.sin(pl.angle) * pd * maxR;
+        var ps = pl.baseSize * (0.3 + pl.dist * 2.5);
+        var pa = 0.15 + pl.dist * 0.4;
+        if (pl.dist < 0.05) pa *= pl.dist / 0.05;
+        if (pl.dist > 0.9) pa *= (1.1 - pl.dist) / 0.2;
+        var pg = mCtx.createRadialGradient(px - ps * 0.3, py - ps * 0.3, 0, px, py, ps);
+        pg.addColorStop(0, 'rgba(120,120,120,' + (pa * 0.5) + ')');
+        pg.addColorStop(0.7, 'rgba(80,80,80,' + (pa * 0.7) + ')');
+        pg.addColorStop(1, 'rgba(50,50,50,' + (pa * 0.3) + ')');
+        mCtx.beginPath(); mCtx.arc(px, py, ps, 0, Math.PI * 2);
+        mCtx.fillStyle = pg; mCtx.fill();
+        if (pl.hasRing && ps > 2) {
+          mCtx.beginPath();
+          mCtx.ellipse(px, py, ps * 2, ps * 0.4, 0.3, 0, Math.PI * 2);
+          mCtx.strokeStyle = 'rgba(80,80,80,' + (pa * 0.3) + ')';
+          mCtx.lineWidth = 0.3 + pl.dist * 0.4; mCtx.stroke();
+        }
+      }
+
+      requestAnimationFrame(drawMobileTunnel);
+    }
+    requestAnimationFrame(drawMobileTunnel);
 
     mobileArea.addEventListener('touchstart', function(e) {
       e.preventDefault();
@@ -282,7 +475,22 @@
       setTimeout(showMobileLine, 3500 + Math.random() * 2000);
     }
 
-    setTimeout(showMobileLine, 1000);
+    // Tunnel-effect na 4 seconden, eerste regel na 6 seconden
+    setTimeout(function() {
+      mobileArea.classList.add('visible');
+      mBurstTime = performance.now();
+      mTunnelActive = true;
+      for (var i = 0; i < 6; i++) {
+        mBurstRings.push({
+          delay: i * 120,
+          speed: 1.5 + Math.random() * 0.3,
+          width: 2.5 + i * 1.2,
+          maxAlpha: 0.35 - i * 0.04,
+          radius: 0
+        });
+      }
+    }, 4000);
+    setTimeout(showMobileLine, 6000);
 
   } else {
     // ════════════════════════════════════════
@@ -300,12 +508,12 @@
     window.addEventListener('resize', resizeCanvas);
 
     var stars = [];
-    for (var i = 0; i < 12; i++) {
+    for (var i = 0; i < 15; i++) {
       stars.push({
         angle: Math.random() * Math.PI * 2, dist: Math.random(),
-        speed: 0.0008 + Math.random() * 0.003,
-        size: 0.4 + Math.random() * 1.2,
-        brightness: 0.3 + Math.random() * 0.5,
+        speed: 0.0006 + Math.random() * 0.003,
+        size: 0.5 + Math.random() * 1.8,
+        brightness: 0.4 + Math.random() * 0.6,
         twinkleSpeed: 0.4 + Math.random() * 1.5,
         twinkleOffset: Math.random() * Math.PI * 2
       });
@@ -325,9 +533,40 @@
       });
     }
 
+    // Sterrenstof - kleine deeltjes
+    var dust = [];
+    for (var i = 0; i < 15; i++) {
+      dust.push({
+        angle: Math.random() * Math.PI * 2,
+        dist: Math.random(),
+        speed: 0.0003 + Math.random() * 0.002,
+        size: 0.2 + Math.random() * 0.6,
+        brightness: 0.15 + Math.random() * 0.35
+      });
+    }
+
     var isPaused = false;
+    var burstTime = null;
+    var tunnelActive = false;
+    var burstRings = [];
 
     function getCenter() { return { x: canvas.width / 2, y: canvas.height * 0.45 }; }
+
+    // Start burst na 4 seconden: reeks expanderende ringen
+    setTimeout(function() {
+      burstTime = performance.now();
+      tunnelActive = true;
+      // 6 ringen met toenemende vertraging (Bond barrel-stijl)
+      for (var i = 0; i < 6; i++) {
+        burstRings.push({
+          delay: i * 120,
+          speed: 1.8 + Math.random() * 0.4,
+          width: 3 + i * 1.5,
+          maxAlpha: 0.4 - i * 0.04,
+          radius: 0
+        });
+      }
+    }, 4000);
 
     function drawTunnel(now) {
       var w = canvas.width, h = canvas.height;
@@ -337,13 +576,40 @@
       ctx.fillStyle = '#fff';
       ctx.fillRect(0, 0, w, h);
 
+      if (!tunnelActive) { requestAnimationFrame(drawTunnel); return; }
+
+      var burstElapsed = now - burstTime;
+
+      // Expanderende ringen tekenen (Bond barrel-effect)
+      for (var r = 0; r < burstRings.length; r++) {
+        var ring = burstRings[r];
+        var ringTime = burstElapsed - ring.delay;
+        if (ringTime < 0) continue;
+        ring.radius += ring.speed;
+        var fadeStart = maxR * 0.6;
+        var alpha = ring.maxAlpha;
+        if (ring.radius > fadeStart) {
+          alpha *= Math.max(0, 1 - (ring.radius - fadeStart) / (maxR * 0.5));
+        }
+        if (alpha > 0.005) {
+          ctx.beginPath();
+          ctx.arc(cx, cy, ring.radius, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(0,0,0,' + alpha + ')';
+          ctx.lineWidth = ring.width;
+          ctx.stroke();
+        }
+      }
+
+      // Normale tunnel-cirkels (fade in gedurende eerste 1.5 sec)
+      var tunnelAlpha = Math.min(burstElapsed / 1500, 1);
+
       for (var i = 0; i < 25; i++) {
         var t = i / 24, perspT = Math.pow(t, 2.2);
         var radius = 5 + perspT * maxR;
         ctx.beginPath();
         ctx.arc(cx, cy, radius, 0, Math.PI * 2);
         ctx.closePath();
-        ctx.strokeStyle = 'rgba(0,0,0,' + (0.03 + t * 0.07) + ')';
+        ctx.strokeStyle = 'rgba(0,0,0,' + ((0.03 + t * 0.07) * tunnelAlpha) + ')';
         ctx.lineWidth = 0.4 + t * 1.2;
         ctx.stroke();
       }
@@ -351,17 +617,26 @@
       var pulse = 0.7 + 0.3 * Math.sin(now * 0.002);
       var pulse2 = 0.8 + 0.2 * Math.sin(now * 0.003 + 1);
       var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 40 * pulse2);
-      g.addColorStop(0, 'rgba(0,0,0,' + (0.08 * pulse) + ')');
-      g.addColorStop(0.5, 'rgba(0,0,0,' + (0.03 * pulse) + ')');
+      g.addColorStop(0, 'rgba(0,0,0,' + (0.08 * pulse * tunnelAlpha) + ')');
+      g.addColorStop(0.5, 'rgba(0,0,0,' + (0.03 * pulse * tunnelAlpha) + ')');
       g.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = g;
       ctx.beginPath(); ctx.arc(cx, cy, 40 * pulse2, 0, Math.PI * 2); ctx.fill();
       ctx.beginPath(); ctx.arc(cx, cy, 4 + 2 * pulse, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0,0,0,' + (0.15 * pulse) + ')'; ctx.fill();
+      ctx.fillStyle = 'rgba(0,0,0,' + (0.15 * pulse * tunnelAlpha) + ')'; ctx.fill();
       ctx.beginPath(); ctx.arc(cx, cy, 1.5, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.fill();
+      ctx.fillStyle = 'rgba(0,0,0,' + (0.3 * tunnelAlpha) + ')'; ctx.fill();
 
       if (!isPaused) {
+        // Sterrenstof bewegen
+        for (var d = 0; d < dust.length; d++) {
+          dust[d].dist += dust[d].speed;
+          if (dust[d].dist > 1.1) {
+            dust[d].dist = 0;
+            dust[d].angle = Math.random() * Math.PI * 2;
+            dust[d].speed = 0.0003 + Math.random() * 0.002;
+          }
+        }
         for (var s = 0; s < stars.length; s++) {
           stars[s].dist += stars[s].speed;
           if (stars[s].dist > 1.1) {
@@ -379,6 +654,19 @@
         }
       }
 
+      // Sterrenstof tekenen
+      for (var d = 0; d < dust.length; d++) {
+        var dt = dust[d], dpd = Math.pow(dt.dist, 1.8);
+        var dx = cx + Math.cos(dt.angle) * dpd * maxR;
+        var dy = cy + Math.sin(dt.angle) * dpd * maxR;
+        var dsz = dt.size * (0.1 + dt.dist * 1.5);
+        var da = dt.brightness * (0.3 + dt.dist * 0.7);
+        if (dt.dist < 0.05) da *= dt.dist / 0.05;
+        if (dt.dist > 0.9) da *= (1.1 - dt.dist) / 0.2;
+        ctx.beginPath(); ctx.arc(dx, dy, dsz, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,0,0,' + (da * 0.4) + ')'; ctx.fill();
+      }
+
       for (var s = 0; s < stars.length; s++) {
         var st = stars[s], pd = Math.pow(st.dist, 1.8);
         var sx = cx + Math.cos(st.angle) * pd * maxR;
@@ -389,7 +677,7 @@
         if (st.dist < 0.05) sa *= st.dist / 0.05;
         if (st.dist > 0.9) sa *= (1.1 - st.dist) / 0.2;
         ctx.beginPath(); ctx.arc(sx, sy, sz, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0,0,0,' + (sa * 0.5) + ')'; ctx.fill();
+        ctx.fillStyle = 'rgba(0,0,0,' + (sa * 0.8) + ')'; ctx.fill();
       }
 
       for (var p = 0; p < planets.length; p++) {
@@ -428,10 +716,11 @@
     });
 
     function getDir() {
-      var xSign = Math.random() > 0.5 ? 1 : -1;
+      var angle = Math.random() * Math.PI * 2;
+      var dist = 0.3 + Math.random() * 0.1;
       return {
-        xOffset: xSign * (0.25 + Math.random() * 0.15),
-        yOffset: (Math.random() - 0.5) * 0.18
+        xOffset: Math.cos(angle) * dist,
+        yOffset: Math.sin(angle) * dist
       };
     }
 
@@ -487,7 +776,7 @@
       animateLine(currentLine); currentLine++;
       setTimeout(startSeq, 3000 + Math.random() * 1200);
     }
-    setTimeout(startSeq, 1000);
+    setTimeout(startSeq, 6000);
   }
 </script>
 
